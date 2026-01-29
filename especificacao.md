@@ -16,6 +16,8 @@ A Django ToDoList é uma aplicação web para gestão de tarefas pessoais, ofere
 
 * Proteções básicas de segurança
 
+![image6.png](images/image6.png)
+
 ## 3. Requisitos Funcionais
 
 * RF01: Registo de utilizadores
