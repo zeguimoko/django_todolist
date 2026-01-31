@@ -10,7 +10,7 @@
   <tbody>
   {% for t in tasks %}
     <tr>
-      <td>{{ t.title|escape }}</td>
+      <td>{{ t.title|safe }}</td>
       <td>{{ t.is_done|yesno:"✔,✖" }}</td>
       <td>
         <a href="/tasks/{{ t.id }}/toggle/">Alternar</a> |
