@@ -14,8 +14,8 @@ Este guia tem como objetivo capacitar os formandos a utilizar o Git de forma aut
 8. [Adicionar Ficheiros](#7️⃣-adicionar-ficheiros-stage)
 9. [Commit](#8️⃣-commit--guardar-alterações-localmente)
 10. [Branches](#9️⃣-branches-ramificações)
-11. [Merge de Branches](#🔟-merge-de-branches)
-12. [Atualizar e Enviar Código](#1️⃣1️⃣-atualizar-e-enviar-código)
+11. [Atualizar e Enviar Código](#🔟-atualizar-e-enviar-código)
+12. [Merge de Branches](#1️⃣1️⃣-merge-de-branches)
 13. [Conflitos](#1️⃣2️⃣-resolução-básica-de-conflitos)
 14. [Gitignore](#1️⃣3️⃣-ficheiro-gitignore)
 15. [Boas Práticas de Segurança](#1️⃣4️⃣-git-e-boas-práticas-de-segurança)
@@ -87,22 +87,35 @@ O Git contribui para a segurança porque:
 ---
 
 ## 4️⃣ Configuração inicial do Git
+Verificar versão:
+```bash
+git -v
+```
 
+Listar configurações globais do Git `~/.gitconfig`:
+```bash
+git config --list
+```
+
+Configurar nome e email:
 ```bash
 git config --global user.name "Seu Nome"
 git config --global user.email "seu@email.com"
-git config --list
 ```
 
 ---
 
 ## 5️⃣ Criar ou clonar um repositório existente
 
+Iniciar repositório:
 ```bash
 git init
-git clone https://github.com/empresa/projeto.git
 ```
 
+Clonar um repositório:
+```bash
+git clone https://github.com/zeguimoko/django_todolist.git
+```
 ---
 
 ## 6️⃣ Estado do repositório
@@ -119,8 +132,9 @@ Mostra:
 ## 7️⃣ Adicionar ficheiros (stage)
 Adicionar ficheiro específico:
 ```bash
-git add ficheiro.txt
+git add your_name.txt
 ```
+
 Adicionar todos:
 ```bash
 git add .
@@ -153,50 +167,61 @@ corrige validação de formulário
 exclui ficheiros de cache no gitignore
 ```
 
+**Exercicio:** Passar para o tópico seguinte ```branches``` de seguida completar o exercício de ```commits```.
 ---
 
 ## 9️⃣ Branches (ramificações)
+Branch: uma ramificação do repositório. Cada ramificação pode ter um nome, com um histórico de alterações, e um ponteiro para o repositório principal. 
+
 Listar branches
 ```bash
 git branch
 ```
 Criar branch
 ```bash
-git branch feature-login
+git branch you-name
 ```
 Mudar de branch
 ```bash
-git checkout -b feature-login
+git checkout you-name
 ```
 
 **Boa prática:**\
 Nunca desenvolver diretamente na branch `main` / `master`.
 
+
+**Exercicio do commit:** criar commits com mensagens clares e objetivas, a escolha do formando.
+
 ---
 
-## 🔟 Merge de Branches
+## 🔟 Atualizar e enviar código
+
+Enviar branch para remoto
+```bash
+git push origin you-name
+```
+
+Atualizar branch local
+```bash
+git pull origin you-name
+```
+
+---
+
+## 1️⃣1️⃣ Merge de Branches
 **Juntar código de uma branch noutra**.
 
 Exemplo:
 
 ```bash
 git checkout main
-git merge feature-login
+git pull
+git merge you-name
+git status   
+git push
 ```
 
-“Trazer o trabalho feito em `feature-login` para a branch `main`.”
-
----
-
-## 1️⃣1️⃣ Atualizar e enviar código
-Atualizar branch local
-```bash
-git pull origin main
-```
-Enviar branch para remoto
-```bash
-git push origin feature-login
-```
+“Trazer o trabalho feito em branch `you-name` para a branch `main`.”
 
 ---
 
@@ -213,6 +238,27 @@ Conflitos surgem quando:
 4. Remover marcas `<<<<<<<`, `=======`, `>>>>>>>`
 4. Commit
 
+***Exercicio:*** 
+1 - Mudar de branch
+```bash
+git checkout you-name
+```
+2 - Alterar ficheiro your_name.txt na linha 1, diretamente no github a partir do branch you-name
+3 - Voltar para IDE e alterar ficheiro your_name.txt na mesma linha, para testar a resolucao de conflito.
+4 - Enviar para github:
+```bash
+git add your_name.txt
+git commit -m "modificação de your_name.txt no IDE"
+git pull origin you-name
+git config pull.rebase false ### desligar rebase e forçar merge, em caso de erro no ```pull``` e tentar ```pull``` novamente.
+```
+5 - Voltar para IDE e alterar ficheiro your_name.txt na linha 1, para testar a resolucao de conflito.
+6 - Enviar para github:
+```bash
+git add your_name.txt
+git commit -m "Rsolução de conflito de your_name.txt no IDE"
+git push origin you-name
+```
 ---
 
 ## 1️⃣3️⃣ Ficheiro `.gitignore`
