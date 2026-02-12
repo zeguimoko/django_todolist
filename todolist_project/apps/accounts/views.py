@@ -2,12 +2,27 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib import messages
+#from django.contrib.auth.password_validation import validate_password
+
+
+
+
 
 
 def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+
+    
+        """ 
+        try:
+            validate_password(password, user=username)
+        except Exception as e:
+            messages.error(request, str(e))
+            return render(request, 'accounts/register.html')
+        
+        """
         if not username or not password:
             messages.error(request, 'Utilizador e password são obrigatórios.')
             return render(request, 'accounts/register.html')
