@@ -26,8 +26,6 @@ jobs:
         #env:
         #  DJANGO_SETTINGS_MODULE: config.settings
         run: |
-          python manage.py test apps.tasks.uni_test.TaskListSecurityTest.test_task_list_sql_injection_in_title -v 2
-          python manage.py test apps.tasks.uni_test.DeleteTaskSecurityTest.test_usuario_intruso_nao_deleta_task_de_outro -v 2
-        # python todolist_project/manage.py test todolist_project
+          python todolist_project/manage.py test todolist_project
           
     
