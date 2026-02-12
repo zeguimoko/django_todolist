@@ -53,10 +53,10 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            ejst/django_todolist:latest
-            ejst/django_todolist:${{ github.event.release.tag_name }}
-          cache-from: type=registry,ref=ejst/django_todolist:buildcache
-          cache-to: type=registry,ref=ejst/django_todolist:buildcache,mode=max
+            zeguimoko/django_todolist:latest
+            zeguimoko/django_todolist:${{ github.event.release.tag_name }}
+          cache-from: type=registry,ref=zeguimoko/django_todolist:buildcache
+          cache-to: type=registry,ref=zeguimoko/django_todolist:buildcache,mode=max
     
     
   deploy-to-server-cd:
