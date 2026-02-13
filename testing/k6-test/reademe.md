@@ -2,7 +2,7 @@
 
 ## RUN k6 test wiwith docker
 ```bash
-docker run --rm -i --network=web-app-network --net=host grafana/k6 run - <script.js
+docker run --rm -i --net=host grafana/k6 run - <script.js
 ```
 
 ## OR Install k6 (Manually)

@@ -1,11 +1,14 @@
+# Desativa autenticacao no Loki local (ambiente de laboratorio/dev).
 auth_enabled: false
 
+# Parametros do servidor HTTP/gRPC e nivel de logs internos.
 server:
   http_listen_port: 3100
   grpc_listen_port: 9096
   log_level: debug
   grpc_server_max_concurrent_streams: 1000
 
+# Configuracão comum: paths locais, storage em filesystem.
 common:
   instance_addr: 127.0.0.1
   path_prefix: /tmp/loki
@@ -14,10 +17,11 @@ common:
       chunks_directory: /tmp/loki/chunks
       rules_directory: /tmp/loki/rules
   replication_factor: 1
-  ring:
+  ring: 
     kvstore:
       store: inmemory
 
+# Cache de resultados para acelerar queries repetidas (query_range).
 query_range:
   results_cache:
     cache:
@@ -25,13 +29,15 @@ query_range:
         enabled: true
         max_size_mb: 100
 
+# Limites e features de consulta/metrica habilitadas.
 limits_config:
-  metric_aggregation_enabled: true
-  enable_multi_variant_queries: true
+  metric_aggregation_enabled: true # habilita metric aggregation
+  enable_multi_variant_queries: true # habilita multi-variant queries
 
+# Define o schema de armazenamento TSDB (v13) e indice diario.
 schema_config:
   configs:
-    - from: 2020-10-24
+    - from: 2026-02-12 # data de criacao do indice
       store: tsdb
       object_store: filesystem
       schema: v13
@@ -39,16 +45,19 @@ schema_config:
         prefix: index_
         period: 24h
 
-pattern_ingester:
+# Ativa pattern ingester e aponta agregacao para o proprio Loki local.
+pattern_ingester: # componente que analisa logs em tempo real e extrai metadados
   enabled: true
   metric_aggregation:
     loki_address: localhost:3100
 
+# Endpoint do Alertmanager para regras/alertas do ruler.
 ruler:
   alertmanager_url: http://localhost:9093
 
+# Frontend de query com encoding protobuf para eficiencia.
 frontend:
-  encoding: protobuf
+  encoding: protobuf # usa Protocol Buffers em vez de JSON para tráfego interno (é mais eficiente)
 
 
 # By default, Loki will send anonymous, but uniquely-identifiable usage and configuration

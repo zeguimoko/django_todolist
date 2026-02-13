@@ -45,7 +45,7 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_SMTP_ENABLED=true
-      #- GF_SMTP_HOST=mailpit:1025
+      - GF_SMTP_HOST=mailpit:1025
       - GF_SMTP_USER=
       - GF_SMTP_PASSWORD=
       - GF_SMTP_FROM_ADDRESS=grafana@local.test
@@ -61,13 +61,15 @@ services:
     networks:
       - web-app-network
 
-  # mailpit:
-  #   image: axllent/mailpit:latest
-  #   container_name: mailpit
-  #   ports:
-  #   #  - "1025:1025" # SMTP
-  #     - "8025:8025" # Web UI
-  #   restart: unless-stopped
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit
+    ports:
+    #  - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
+    restart: unless-stopped
+    networks:
+      - web-app-network
 volumes:
   bca-grafana-data:
     name: bca-grafana-data

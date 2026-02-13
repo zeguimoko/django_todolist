@@ -1,3 +1,4 @@
+// Controla o nivel de logs internos do Alloy para troubleshooting.
 logging {
   level = "debug"
 }
@@ -6,22 +7,45 @@ logging {
 // LOGS -> LOKI
 //////////////////////////
 
+// Define o destino de escrita dos logs: endpoint de ingestao do Loki.
 loki.write "loki" {
   endpoint {
     url = "http://loki:3100/loki/api/v1/push"
   }
 }
 
+// Descobre containers ativos via Docker API usando o socket do host.
 discovery.docker "containers" {
   host = "unix:///var/run/docker.sock"
 }
 
+// Filtra os alvos para apenas django_todolist e normaliza label de container.
+discovery.relabel "django_only" {
+  targets = discovery.docker.containers.targets
+
+  // Mantem somente o container /django_todolist no pipeline de logs.
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/django_todolist"
+    action        = "keep"
+  }
+
+  // Extrai o nome do container e grava no label final "container".
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/(.*)"
+    target_label  = "container"
+  }
+}
+
+// Le stdout/stderr dos containers filtrados e encaminha para loki.write.
 loki.source.docker "docker_logs" {
   host    = "unix:///var/run/docker.sock"
-  targets = discovery.docker.containers.targets
+  targets = discovery.relabel.django_only.output
 
   forward_to = [loki.write.loki.receiver]
 
+  // Label base para facilitar queries no Grafana/Loki.
   labels = {
     job = "docker",
   }
