@@ -1,0 +1,11 @@
+[[runners]]
+  name = "runner-docker"
+  url = "http://gitlab"
+  token = "XXX"
+  executor = "docker"
+
+  [runners.docker]
+    image = "docker:27"
+    privileged = true
+    volumes = ["/var/run/docker.sock:/var/run/docker.sock", "/cache"]
+    shm_size = 0
