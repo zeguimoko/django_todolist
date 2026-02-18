@@ -6,7 +6,7 @@ unit-tests:
   stage: test
   image: python:3.12
   tags:
-    - docker
+    - dcoker
   script:
     - python -m pip install --upgrade pip
     - pip install -r requirements.txt
