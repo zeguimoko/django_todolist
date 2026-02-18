@@ -119,7 +119,7 @@ Para criar runner pelo painel de administração:
 
 1. Abra `http://localhost:8080/admin/runners`.
 2. Clique em `New instance runner` (ou opção equivalente de criar runner).
-3. Defina as opções do runner (ex.: descrição, tags e se aceita `untagged jobs`).
+3. Defina as opções do runner com tags: `gitlab-runner` e habilite a opção `Run untagged jobs`).
 4. Copie o token gerado.
 5. Atualize `config.toml` com o token no campo:
 
