@@ -1,0 +1,11 @@
+stages:
+  - test
+
+runner_smoke_test:
+  stage: test
+  image: docker:27
+  script:
+    - echo "Runner: $CI_RUNNER_DESCRIPTION"
+    - echo "Projeto: $CI_PROJECT_PATH"
+    - docker version
+    - docker info
