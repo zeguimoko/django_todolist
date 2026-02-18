@@ -115,30 +115,36 @@ O serviço `gitlab-runner` já está no compose e monta:
 - `./config.toml` em `/etc/gitlab-runner/config.toml`
 - `/var/run/docker.sock` para executar builds Docker
 
-Se precisar registrar o runner manualmente:
+Para criar runner pelo painel de administração:
 
-```bash
-docker exec -it gitlab-runner gitlab-runner register
+1. Abra `http://localhost:8080/admin/runners`.
+2. Clique em `New instance runner` (ou opção equivalente de criar runner).
+3. Defina as opções do runner (ex.: descrição, tags e se aceita `untagged jobs`).
+4. Copie o token gerado.
+5. Atualize `config.toml` com o token no campo:
+
+```toml
+token = "glrt-<SEU_TOKEN>"
 ```
 
-Use a URL configurada (`http://gitlab` dentro da rede Docker, conforme `config.toml`) e um token de registro válido.
-
-## Comandos úteis
-
-Parar os serviços:
+6. Reinicie o serviço do runner:
 
 ```bash
-docker compose down
+docker compose restart gitlab-runner
 ```
 
-Parar e remover volumes (apaga dados do GitLab):
+7. Verifique se o runner foi validado:
 
 ```bash
-docker compose down -v
+docker exec gitlab-runner gitlab-runner verify
 ```
 
-Reiniciar apenas o GitLab:
+8. Acompanhe os logs:
 
 ```bash
-docker compose restart gitlab
+docker logs -f gitlab-runner
 ```
+
+9. Volte em `http://localhost:8080/admin/runners` e confirme que o runner aparece com status `online`.
+
+Nota: se o pipeline ficar `pending`, confira se as tags do job em `.gitlab-ci.yml` coincidem com as tags configuradas no runner, ou habilite `Run untagged jobs`.
