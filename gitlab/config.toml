@@ -1,7 +1,7 @@
 [[runners]]
   name = "runner-docker"
   url = "http://gitlab"
-  token = "XXX"
+  token = "glrt-sjXcRgHtyP6uMX8MZ_MCwm86MQpwOjEKdDozCnU6MQ8.01.171uod0n3"
   executor = "docker"
 
   [runners.docker]
