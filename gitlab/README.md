@@ -119,7 +119,7 @@ Para criar runner pelo painel de administração:
 
 1. Abra `http://localhost:8080/admin/runners`.
 2. Clique em `New instance runner` (ou opção equivalente de criar runner).
-3. Defina as opções do runner com tags: `gitlab-runner` e habilite a opção `Run untagged jobs`).
+3. Defina as opções do runner com tags (ex.: `gitlab-runner`) e, se necessário, habilite `Run untagged jobs`.
 4. Copie o token gerado.
 5. Atualize `config.toml` com o token no campo:
 
@@ -148,3 +148,58 @@ docker logs -f gitlab-runner
 9. Volte em `http://localhost:8080/admin/runners` e confirme que o runner aparece com status `online`.
 
 Nota: se o pipeline ficar `pending`, confira se as tags do job em `.gitlab-ci.yml` coincidem com as tags configuradas no runner, ou habilite `Run untagged jobs`.
+
+### Alternativa: registar runner via linha de comando
+
+1. Registe o runner:
+
+```bash
+docker exec -it gitlab-runner gitlab-runner register
+```
+
+2. Responda aos prompts:
+
+- `URL`: `http://gitlab:80`
+- `Token`: introduza o token obtido na UI do GitLab
+- `Description`: `docker`
+- `Executor`: `docker`
+- `Default image`: `docker:27`
+
+3. Depois valide:
+
+```bash
+docker compose restart gitlab-runner
+docker exec gitlab-runner gitlab-runner verify
+docker logs -f gitlab-runner
+```
+
+4. Volte a `http://localhost:8080/admin/runners` e confirme que o runner criado aparece com status `online`.
+
+## Criar o `.gitlab-ci.yml` (se não existir)
+
+Se não existir o ficheiro `.gitlab-ci.yml` na raiz do repositório, crie com este conteúdo:
+
+```yaml
+stages:
+  - test
+
+unit-tests:
+  stage: test
+  image: python:3.12
+  #tags:
+  #  - gitlab-runner
+  script:
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - python todolist_project/manage.py test todolist_project
+```
+
+Faça commit e push para disparar a pipeline:
+
+```bash
+git add .
+git commit -m "Add CI pipeline"
+git push origin main
+```
+
+Depois volte à página do projeto e acompanhe em `Build > Pipelines`.
